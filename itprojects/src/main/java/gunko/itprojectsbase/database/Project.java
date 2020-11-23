@@ -1,8 +1,6 @@
 package gunko.itprojectsbase.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -17,22 +15,26 @@ public class Project
     private String description;
     private LocalDate startDate;
 
-    public Integer getId()
-    {
-        return id;
-    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
 
     public Project()
     {
     }
 
-    public Project(String title, String description, LocalDate startDate)
+    public Project(String title, String description, LocalDate startDate, User author)
     {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
+        this.author = author;
     }
 
+    public Integer getId()
+    {
+        return id;
+    }
     public void setId(Integer id)
     {
         this.id = id;
@@ -42,7 +44,6 @@ public class Project
     {
         return title;
     }
-
     public void setTitle(String title)
     {
         this.title = title;
@@ -52,7 +53,6 @@ public class Project
     {
         return description;
     }
-
     public void setDescription(String description)
     {
         this.description = description;
@@ -62,9 +62,11 @@ public class Project
     {
         return startDate;
     }
-
     public void setStartDate(LocalDate startDate)
     {
         this.startDate = startDate;
     }
+
+    public User getAuthor() { return author; }
+    public void setAuthor(User author) { this.author = author; }
 }

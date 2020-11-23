@@ -6,33 +6,52 @@
 <body>
     <div align="right">
         <form  th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
+            <input type="submit" value="Log Out"/>
         </form>
     </div>
     <h1 align="center"> Projects: </h1>
 
-    <form th:action="@{/projects}" method="post">
-        <label> Title: <input type="text" name="title"/> </label> <br>
-        <label> Description: <input type="description" name="description"/> </label> <br>
-        <label> Start Date: <input type="date" name="startDate"/> </label> <br>
-        <input type="submit" value="Add project"/>
-    </form>
+    <table style="width:100%">
+        <tr>
+            <th>New project:</th>
+            <th>Filter:</th>
+        </tr>
+        <tr>
+            <td style="width:50%" align="center" >
+                <form th:action="@{/projects}" method="post">
+                    <label> Title: <input type="text" name="title"/> </label> <br>
+                    <label> Description: <input type="description" name="description"/> </label> <br>
+                    <label> Start Date: <input type="date" name="startDate"/> </label> <br>
+                    <input type="submit" value="Add project"/>
 
-    <label th:if="${projectAdded}" style="color: green" >
-        Project Successfully added
-    </label>
-    <label th:if="${projectNotAdded}" style="color: red" >
-        Error
-    </label>
+                    <label th:if="${projectAdded}" style="color: green" >
+                        Project successfully added.
+                    </label>
+                    <label th:if="${projectNotAdded}" style="color: red" >
+                        Project adding exception, incorrect info in the fields.
+                    </label>
+                    <br>
+                </form>
+            </td>
+            <td style="width:50%" align="center" >
+                <form th:action="@{/projects}" method="get">
+                    <label>Keyword: <input type="text" name="filter" placeholder="Any word or YYYY-MM-DD" ></label>
+                    <input type="submit" value="Filter">
+                </form>
+            </td>
+    </table>
 
-    <div th:if="${projects.isEmpty()}">
+
+
+    <div th:if="${projects.isEmpty()}" align="center" >
         <label colspan="2"> No Projects Available </label>
     </div>
 
-    <div th:each="project : ${projects}">
-        <label th:text="${project.title}" /> <br>
-        <label th:text="${project.description}"/> <br>
-        <label th:text="${project.startDate.getDayOfMonth() +'.'+ project.startDate.getMonthValue() +'.'+ project.startDate.getYear()}"/> <br>
+    <div th:each="project : ${projects}" align="center">
+        <b th:text="${project.getTitle()}" /> <br>
+        <label th:text="${project.getDescription()}"/> <br>
+        <i th:text="${project.getAuthor().getUsername()}"></i> <br>
+        <label th:text="${project.getStartDate().toString()}"/> <br>
         <br>
     </div>
 </body>

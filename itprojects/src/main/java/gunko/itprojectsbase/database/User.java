@@ -1,10 +1,15 @@
 package gunko.itprojectsbase.database;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "usr")
-public class User
+public class User implements UserDetails
 {
     @Id
     @GeneratedValue()
@@ -20,10 +25,7 @@ public class User
     private Boolean active;
     private String userCV;
 
-    public Integer getId()
-    {
-        return id;
-    }
+    public Integer getId() { return id; }
 
     public void setId(Integer id)
     {
@@ -35,9 +37,42 @@ public class User
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled()
+    {
+        return getActivated();
+    }
+
     public void setUsername(String login)
     {
         this.username = login;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        Collection<Role> roles = new ArrayList<Role>();
+        roles.add(getRole());
+
+        return roles;
     }
 
     public String getPassword()
