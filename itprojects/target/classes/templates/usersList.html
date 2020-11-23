@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <div align="right">
+        <a href="/projects" >Back to the projects page</a>
+        <form  th:action="@{/logout}" method="post">
+            <input type="submit" value="Log Out"/>
+        </form>
+    </div>
+    <h1 align="center"> Users: </h1>
+
+    <div th:if="${users.isEmpty()}" align="center" >
+        <label colspan="2"> No Users </label>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="arrayUser : ${users}" th:if="${currentUser.getId() != arrayUser.getId()}" >
+                <td th:text="${arrayUser.getUsername()}" />
+                <td th:text="${arrayUser.getRole()}"     />
+                <td th:text="${arrayUser.getEmail()}"    />
+                <td>
+                    <form th:action="@{/users/{username}/edit(username=${arrayUser.getUsername()})}" method="put">
+                        <input type="submit" value="Change role"/>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
