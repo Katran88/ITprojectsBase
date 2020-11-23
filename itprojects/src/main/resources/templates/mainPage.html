@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Projects Base</title>
+</head>
+<body>
+    <div align="right">
+        <form  th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+    <h1 align="center"> Projects: </h1>
+
+    <form th:action="@{/projects}" method="post">
+        <label> Title: <input type="text" name="title"/> </label> <br>
+        <label> Description: <input type="description" name="description"/> </label> <br>
+        <label> Start Date: <input type="date" name="startDate"/> </label> <br>
+        <input type="submit" value="Add project"/>
+    </form>
+
+    <label th:if="${projectAdded}" style="color: green" >
+        Project Successfully added
+    </label>
+    <label th:if="${projectNotAdded}" style="color: red" >
+        Error
+    </label>
+
+    <div th:if="${projects.isEmpty()}">
+        <label colspan="2"> No Projects Available </label>
+    </div>
+
+    <div th:each="project : ${projects}">
+        <label th:text="${project.title}" /> <br>
+        <label th:text="${project.description}"/> <br>
+        <label th:text="${project.startDate.getDayOfMonth() +'.'+ project.startDate.getMonthValue() +'.'+ project.startDate.getYear()}"/> <br>
+        <br>
+    </div>
+</body>
+</html>

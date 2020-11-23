@@ -3,20 +3,21 @@ package gunko.itprojectsbase.database;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "usr")
 public class User
 {
     @Id
     @GeneratedValue()
     private Integer id;
 
-    private String login;
+    private String username;
     private String password;
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Boolean isActivated;
+    private Boolean active;
     private String userCV;
 
     public Integer getId()
@@ -29,14 +30,14 @@ public class User
         this.id = id;
     }
 
-    public String getLogin()
+    public String getUsername()
     {
-        return login;
+        return username;
     }
 
-    public void setLogin(String login)
+    public void setUsername(String login)
     {
-        this.login = login;
+        this.username = login;
     }
 
     public String getPassword()
@@ -71,12 +72,12 @@ public class User
 
     public Boolean getActivated()
     {
-        return isActivated;
+        return active;
     }
 
     public void setActivated(Boolean activated)
     {
-        isActivated = activated;
+        active = activated;
     }
 
     public String getUserCV()
