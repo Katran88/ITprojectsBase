@@ -18,12 +18,12 @@ public class User implements UserDetails
     private String username;
     private String password;
     private String email;
+    private String activationCode;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     private Boolean active;
-    private String userCV;
 
     public Integer getId() { return id; }
 
@@ -115,13 +115,15 @@ public class User implements UserDetails
         active = activated;
     }
 
-    public String getUserCV()
+    public String getActivationCode()
     {
-        return userCV;
+        return activationCode;
     }
 
-    public void setUserCV(String userCV)
+    public void setActivationCode(String activationCode)
     {
-        this.userCV = userCV;
+        this.activationCode = activationCode;
     }
+
+    public boolean isAdmin() { return getRole() == Role.Admin; }
 }

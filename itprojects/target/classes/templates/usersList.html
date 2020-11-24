@@ -31,7 +31,7 @@
                 <td th:text="${arrayUser.getRole()}"     />
                 <td th:text="${arrayUser.getEmail()}"    />
                 <td>
-                    <form th:action="@{/users/{username}/edit(username=${arrayUser.getUsername()})}" method="put">
+                    <form th:action="@{/users/{username}/edit(username=${arrayUser.getUsername()})}" th:method="put">
                         <input type="submit" value="Change role"/>
                     </form>
                 </td>

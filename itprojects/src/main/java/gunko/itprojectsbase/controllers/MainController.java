@@ -3,6 +3,8 @@ package gunko.itprojectsbase.controllers;
 import gunko.itprojectsbase.database.Project;
 import gunko.itprojectsbase.database.User;
 import gunko.itprojectsbase.database.repositories.ProjectRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,14 +23,19 @@ import java.util.List;
 @RequestMapping("/projects")
 public class MainController
 {
+    Logger logger = LoggerFactory.getLogger(MainController.class);
+
     @Autowired
     private ProjectRepository projectRepository;
 
     @GetMapping
     public String getMainPageController(
+            @AuthenticationPrincipal User currentUser,
             @RequestParam(required = false) String filter,
             Model model)
     {
+        logger.info("get request to the main page");
+
         if(filter != null)
         {
            try
@@ -37,7 +44,7 @@ public class MainController
            }
            catch(DateTimeParseException ex)
            {
-               //log
+               logger.info("unsuccessful parse filter to the LocalDate");
            }
         }
         else
@@ -53,6 +60,7 @@ public class MainController
             {
                 projects.add(project);
             }
+            logger.debug("projects were added without filtering");
         }
         else
         {
@@ -63,10 +71,13 @@ public class MainController
                      project.getStartDate().toString().compareTo(filter) == 0))
                 {
                     projects.add(project);
+
                 }
             }
+            logger.debug("projects were added with filtering");
         }
 
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("projects", projects);
         model.addAttribute("filter", filter);
         return "mainPage";
@@ -74,7 +85,7 @@ public class MainController
 
     @PostMapping
     public String postMainPageController(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal User currentUser,
             @RequestParam String title,
             @RequestParam String description,
             @RequestParam String startDate,
@@ -88,13 +99,15 @@ public class MainController
         {
             LocalDate temp_start_date = LocalDate.parse(startDate);
 
-            Project tempProject = new Project(title, description, temp_start_date, user);
+            Project tempProject = new Project(title, description, temp_start_date, currentUser);
             projectRepository.save(tempProject);
             model.addAttribute("projectAdded", true);
+
         }
         else
         {
             model.addAttribute("projectNotAdded", true);
+            logger.debug("project not added");
         }
 
 
@@ -103,8 +116,9 @@ public class MainController
         {
             projects.add(el);
         }
-        model.addAttribute("projects", projects);
 
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("projects", projects);
         return "mainPage";
     }
 }

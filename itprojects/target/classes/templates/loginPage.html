@@ -5,13 +5,11 @@
     <title>Log In</title>
 </head>
 <body>
-    <div th:if="${param.error}" style="color: green">
-        Wrong username or password
-    </div>
-
-    <div th:if="${param.logout}" style="color: red">
-        You have successfully logged out
-    </div>
+    <div th:if="${param.logout}" style="color: green"> You have successfully logged out </div>
+    <div th:if="${successfulRegistration}" style="color: green">For entering to the system please, verify your email</div>
+    <div th:if="${userActivated}" style="color: green"> You have successfully activated and can log in </div>
+    <div th:if="${userNotActivated}" style="color: red"> Activation was discarded </div>
+    <div th:if="${param.error}" style="color: red"> Wrong username or password </div>
 
     <form th:action="@{/login}" method="post">
         <div><label> Login: <input type="text" name="username"/> </label></div>
