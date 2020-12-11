@@ -30,7 +30,7 @@ async function getCertainProject(softObj) {
 async function genProject() {
     let info = document.querySelector(".personalInfo");
     let name = input('text', 'name', 'Name', '');
-    let description = input('text', 'description', 'Surname', '');
+    let description = input('text', 'description', 'Description', '');
 
     info.appendChild(name);
     info.appendChild(description);
